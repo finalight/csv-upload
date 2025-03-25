@@ -1,0 +1,40 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16.1 # Use the latest stable PostgreSQL version (check for current)
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      PORT: 3000
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/src:/app/src
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+
+volumes:
+  db_data:

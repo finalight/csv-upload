@@ -1,0 +1,11 @@
+{
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "noEmitOnError": false, 
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "node_modules"] // Exclude test files and node_modules
+}
